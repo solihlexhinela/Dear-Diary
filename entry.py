@@ -1,12 +1,14 @@
+import csv
+from datetime import datetime
+
 from rich.console import Console
 from rich.panel import Panel
 
 console = Console()
 class Authentification:
-  def __init__(self, username, pin, landing):
+  def __init__(self, username, pin):
     self.username = username
     self.pin = pin
-    self.landing = landing
 
   def __str__(self):
     return f"WELCOME BACK {self.username}"
@@ -34,36 +36,68 @@ class Authentification:
       raise ValueError("Invalid password")
     self._pin = pin
 
+class Diary:
   #calander tracker for days journaled
-  def landing(self):
-    content = (
-      "Streak: 🔥 0 Days\n" 
-      "[1] Write today's Entry\n"
-      "[2] Past entries\n"
-      "[3] Exit"
-    )
+  def show_menu(self):
+    while True:
+      content = (
+        "Streak: 🔥 0 Days\n" 
+        "[1] Write today's Entry\n"
+        "[2] Past entries\n"    
+        "[3] Exit"
+      )
 
-    panel = Panel(
-      content,
-      title = "Dear Diary"
-    )
-    console.print(panel)
+      panel = Panel(
+        content,
+        title = "Dear Diary"
+      )
+      console.print(panel)
+
+      choose = int(input("Enter your choice to proceed: "))
+      match choose:
+        case 1:
+          console.rule("NEW ENTRIES", characters="~")  #line decorator
+
+          entries = input("What's on your mind today😁 \n")
+          time_stamp = datetime.now().strftime("%Y-%m-%D %H:%M:%S")
+          with open("entries.csv", "a", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=["time_stamp","entries"])
+            writer.writerow({"time_stamp":time_stamp,"entries": entries}) 
+
+        case 2:
+          console.rule("Previous Entries", characters="~", style="blue")
+
+          entry = []
+          with open("entries.csv", "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+              entry.append({"entries": entry})
+              print(row)
+
+        case 3:
+          break
+        case _:
+          print("Please Choose To Proceed")
+
+          
+
+
+        
+
+
 
 def main():
   authentification = Authentification.get()
   print(authentification)
+  my_diary = Diary()
+  my_diary.show_menu()
+
 
 if __name__=="__main__":
   main()
 
 
-"""
 
-choose = int(input("Enter your choice to proceed: "))
-if choose == 1:
-  console.rule("NEW ENTRIES", characters="~")
-
-"""
 
 
 
