@@ -32,7 +32,7 @@ class Authentification:
   def pin(self):
     return self._pin
   def pin(self, pin):
-    if pin not in ["123"]:
+    if pin not in "123":
       raise ValueError("Invalid password")
     self._pin = pin
 
@@ -54,31 +54,33 @@ class Diary:
       console.print(panel)
 
       choose = int(input("Enter your choice to proceed: "))
-      match choose:
-        case 1:
-          console.rule("NEW ENTRIES", characters="~")  #line decorator
+      try:
+        match choose:
+          case 1:
+            console.rule("NEW ENTRIES", characters="~")  #line decorator
 
-          entries = input("What's on your mind today😁 \n")
-          time_stamp = datetime.now().strftime("%Y-%m-%D %H:%M:%S")
-          with open("entries.csv", "a", newline="") as file:
-            writer = csv.DictWriter(file, fieldnames=["time_stamp","entries"])
-            writer.writerow({"time_stamp":time_stamp,"entries": entries}) 
+            entries = input("What's on your mind today😁 \n")
+            time_stamp = datetime.now().strftime("%Y-%m-%D %H:%M:%S")
+            with open("entries.csv", "a", newline="") as file:
+              writer = csv.DictWriter(file, fieldnames=["time_stamp","entries"])
+              writer.writerow({"time_stamp":time_stamp,"entries": entries}) 
 
-        case 2:
-          console.rule("Previous Entries", characters="~", style="blue")
+          case 2:
+            console.rule("Previous Entries", characters="~", style="blue")
 
-          entry = []
-          with open("entries.csv", "r") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-              entry.append({"entries": entry})
-              print(row)
+            entry = []
+            with open("entries.csv", "r") as file:
+              reader = csv.DictReader(file)
+              for row in reader:
+                entry.append({"entries": entry})
+                print(row)
 
-        case 3:
-          break
-        case _:
-          print("Please Choose To Proceed")
-
+          case 3:
+            break
+          case _:
+            print("Please Choose To Proceed") 
+      except:
+        ValueError("Please Enter 1-3 to continue")
           
 
 
